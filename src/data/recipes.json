@@ -2,7 +2,7 @@
   {
     "id": 1,
     "image": "Recette01.jpg",
-    "name": "Limonade de Coco",
+    "name": "Limonade de coco",
     "servings": 1,
     "ingredients": [
       {
@@ -36,7 +36,7 @@
   {
     "id": 2,
     "image": "Recette02.jpg",
-    "name": "Poisson Cru à la tahitienne",
+    "name": "Poisson cru à la tahitienne",
     "servings": 2,
     "ingredients": [
       {
@@ -175,7 +175,7 @@
         "unit": "cuillères à soupe"
       },
       {
-        "ingredient": "gruyère râpé",
+        "ingredient": "Gruyère râpé",
         "quantity": 100,
         "unit": "grammes"
       },

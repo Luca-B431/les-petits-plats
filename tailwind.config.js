@@ -2,12 +2,12 @@
 export default {
   content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
-    colors: {
-      yellow: '#FFD15B',
-    },
     extend: {
       fontFamily: {
-        Manrope: ['Manrope', 'serif'],
+        manrope: ['Manrope', 'serif'],
+      },
+      colors: {
+        yellow: '#FFD15B',
       },
     },
   },

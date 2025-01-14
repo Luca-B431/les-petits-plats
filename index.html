@@ -11,8 +11,6 @@
       rel="stylesheet"
     />
     <!-- Font Anton -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@200..800&display=swap"
       rel="stylesheet"
@@ -122,10 +120,10 @@
       />
       <div class="w-[728px]">
         <p class="anton pb-4 text-center text-[42px] text-yellow">
-          CHERCHEZ PARMI PLUS DE 1500 RECETTES DU QUOTIDIEN,SIMPLES ET
+          CHERCHEZ PARMI PLUS DE 1500 RECETTES DU QUOTIDIEN, SIMPLES ET
           DÉLICIEUSES
         </p>
-        <div class="size-full rounded-lg bg-[#fff] px-2 py-2">
+        <div class="bg-white size-full rounded-lg px-2 py-2">
           <form
             action="/recherche"
             method="GET"
@@ -139,7 +137,7 @@
               placeholder="Rechercher une recette, un ingrédient, ..."
               required
             />
-            <button type="submit" class="rounded-lg bg-[#000] px-2 py-2">
+            <button type="submit" class="bg-black rounded-lg px-2 py-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -158,8 +156,96 @@
     </header>
 
     <!-- ! -->
-    <main></main>
+    <main>
+      <section
+        id="recipes-section"
+        class="text- flex size-full flex-col items-center justify-center bg-[#EDEDED]"
+      >
+        <!-- ! -->
+        <div
+          id="section-header"
+          class="flex w-full max-w-screen-2xl items-center justify-between px-24 pb-12 pt-5"
+        >
+          <!-- ! -->
+          <div
+            id="button-container"
+            class="flex items-center justify-evenly gap-16"
+          >
+            <button
+              id="ingredients"
+              class="bg-white flex h-14 w-48 items-center justify-between gap-16 rounded-lg px-4 py-4"
+            >
+              Ingrédients
+              <svg
+                width="15"
+                height="8"
+                viewBox="0 0 15 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M1 1L7.5 7L14 1"
+                  stroke="#1B1B1B"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+
+            <button
+              id="appareils"
+              class="bg-white flex h-14 w-48 items-center justify-between gap-16 rounded-lg px-4 py-4"
+            >
+              Appareils
+              <svg
+                width="15"
+                height="8"
+                viewBox="0 0 15 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M1 1L7.5 7L14 1"
+                  stroke="#1B1B1B"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+
+            <button
+              id="ustensiles"
+              class="bg-white flex h-14 w-48 items-center justify-between gap-16 rounded-lg px-4 py-4"
+            >
+              Ustensiles
+              <svg
+                width="15"
+                height="8"
+                viewBox="0 0 15 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M1 1L7.5 7L14 1"
+                  stroke="#1B1B1B"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <span class="anton"> 50 recettes </span>
+        </div>
+
+        <div
+          id="grid-container"
+          class="mx-auto grid w-full max-w-screen-2xl grid-cols-3 place-items-center justify-center gap-12 bg-[#eeeeee] px-24"
+        ></div>
+        <!-- !! -->
+      </section>
+    </main>
     <!-- ! -->
     <footer></footer>
+
+    <script type="module" src="./src/scripts/template.js"></script>
+    <script type="module" src="./src/scripts/index.js"></script>
   </body>
 </html>
