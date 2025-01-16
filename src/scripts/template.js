@@ -25,7 +25,17 @@
  */
 export function getTemplate(data) {
   // Récupération des clés de l'objet pour les utiliser dans la fonction
-  const { image, name, serving, description, time, ingredients } = data;
+  const {
+    id,
+    image,
+    name,
+    servings,
+    ingredients,
+    time,
+    description,
+    appliance,
+    ustensils,
+  } = data;
 
   function createCard() {
     // CREATION DE L'ARTICLE/CARTE
@@ -51,7 +61,7 @@ export function getTemplate(data) {
     const timeBubble = document.createElement('span');
     timeBubble.classList.add(
       'absolute',
-      'z-50',
+      'z-10',
       'top-4',
       'right-4',
       'bg-yellow',
@@ -154,5 +164,16 @@ export function getTemplate(data) {
   }
 
   // Retour de l'instance en cours du pattern Factory
-  return image, name, serving, description, time, ingredients, createCard();
+  return (
+    id,
+    image,
+    name,
+    servings,
+    description,
+    time,
+    ingredients,
+    appliance,
+    ustensils,
+    createCard()
+  );
 }

@@ -123,7 +123,7 @@
           CHERCHEZ PARMI PLUS DE 1500 RECETTES DU QUOTIDIEN, SIMPLES ET
           DÉLICIEUSES
         </p>
-        <div class="bg-white size-full rounded-lg px-2 py-2">
+        <div class="size-full rounded-lg bg-white px-2 py-2">
           <form
             action="/recherche"
             method="GET"
@@ -131,21 +131,21 @@
           >
             <label for="search" class="sr-only">Rechercher</label>
             <input
-              class="size-full rounded-lg px-4 py-2"
+              class="size-full rounded-lg px-4 py-2 focus:outline-none"
               type="search"
               id="search"
               placeholder="Rechercher une recette, un ingrédient, ..."
               required
             />
-            <button type="submit" class="bg-black rounded-lg px-2 py-2">
+            <button type="submit" class="rounded-lg bg-black hover:bg-yellow active:scale-75 px-2 py-2 group">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
+                class="fill-white group-hover:fill-black"
               >
                 <path
-                  fill="#fff"
                   d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"
                 />
               </svg>
@@ -161,27 +161,29 @@
         id="recipes-section"
         class="text- flex size-full flex-col items-center justify-center bg-[#EDEDED]"
       >
-        <!-- ! -->
+        <h2 class="sr-only">Recettes</h2>
         <div
           id="section-header"
           class="flex w-full max-w-screen-2xl items-center justify-between px-24 pb-12 pt-5"
         >
-          <!-- ! -->
           <div
             id="button-container"
             class="flex items-center justify-evenly gap-16"
           >
-            <button
-              id="ingredients"
-              class="bg-white flex h-14 w-48 items-center justify-between gap-16 rounded-lg px-4 py-4"
-            >
-              Ingrédients
-              <svg
+            <!-- LOT BOUTON N°1 INGREDIENTS -->
+            <div id="first-block" class="flex flex-col">
+              <button
+                id="ingredients"
+                class="filter-button relative flex h-14 w-48 items-center justify-between gap-16 rounded-lg bg-white px-4 py-4 shadow-lg"
+              >
+                Ingrédients
+                <svg
                 width="15"
                 height="8"
                 viewBox="0 0 15 8"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                style="transform: rotate(180deg);"
               >
                 <path
                   d="M1 1L7.5 7L14 1"
@@ -189,39 +191,51 @@
                   stroke-linecap="round"
                 />
               </svg>
-            </button>
+              
+              </button>
 
-            <button
-              id="appareils"
-              class="bg-white flex h-14 w-48 items-center justify-between gap-16 rounded-lg px-4 py-4"
-            >
-              Appareils
-              <svg
-                width="15"
-                height="8"
-                viewBox="0 0 15 8"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+              <div
+                id="ingredients-dropdown"
+                class="shadow-lg ingredients-content invisible absolute -bottom-32 z-20 h-auto w-48 flex-col items-center rounded-b bg-white px-4 py-4"
               >
-                <path
-                  d="M1 1L7.5 7L14 1"
-                  stroke="#1B1B1B"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </button>
+                <form action="/recherche" method="GET" class="flex border py-1">
+                  <input
+                    id="ingredients-search"
+                    type="text"
+                    class="w-full px-2 focus:outline-none"
+                    aria-label="Champ de recherche"
+                  />
+                  <button class="bg-white p-1">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="#C6C6C6"
+                        d="M9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l5.6 5.6q.275.275.275.7t-.275.7t-.7.275t-.7-.275l-5.6-5.6q-.75.6-1.725.95T9.5 16m0-2q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"
+                      />
+                    </svg>
+                  </button>
+                </form>
+              </div>
+            </div>
 
-            <button
-              id="ustensiles"
-              class="bg-white flex h-14 w-48 items-center justify-between gap-16 rounded-lg px-4 py-4"
-            >
-              Ustensiles
-              <svg
+            <!-- LOT BOUTON N°2 APPAREILS -->
+            <div id="second-block" class="flex flex-col">
+              <button
+                id="appareils"
+                class="filter-button flex h-14 w-48 items-center justify-between gap-16 rounded-lg bg-white px-4 py-4 shadow-lg"
+              >
+                Appareils
+                <svg
                 width="15"
                 height="8"
                 viewBox="0 0 15 8"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                style="transform: rotate(180deg);"
               >
                 <path
                   d="M1 1L7.5 7L14 1"
@@ -229,7 +243,87 @@
                   stroke-linecap="round"
                 />
               </svg>
-            </button>
+              </button>
+
+              <div
+                id="appareils-dropdown"
+                class="appareils-content shadow-lg invisible absolute -bottom-32 z-20 h-auto w-48 flex-col items-center rounded-b bg-white px-4 py-4"
+              >
+                <form action="/recherche" method="GET" class="flex border py-1">
+                  <input
+                    id="appareils-search"
+                    type="text"
+                    class="w-full px-2 focus:outline-none"
+                    aria-label="Champ de recherche"
+                  />
+                  <button class="bg-white p-1">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="#C6C6C6"
+                        d="M9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l5.6 5.6q.275.275.275.7t-.275.7t-.7.275t-.7-.275l-5.6-5.6q-.75.6-1.725.95T9.5 16m0-2q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"
+                      />
+                    </svg>
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <!-- LOT BOUTON N°3 USTENSILES -->
+            <div id="third-block" class="flex flex-col">
+              <button
+                id="ustensiles"
+                class="filter-button flex shadow-lg h-14 w-48 items-center justify-between gap-16 rounded-lg bg-white px-4 py-4"
+              >
+                Ustensiles
+                <svg
+                width="15"
+                height="8"
+                viewBox="0 0 15 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                style="transform: rotate(180deg);"
+              >
+                <path
+                  d="M1 1L7.5 7L14 1"
+                  stroke="#1B1B1B"
+                  stroke-linecap="round"
+                />
+              </svg>
+                </svg>
+              </button>
+
+              <div
+                id="ustensiles-dropdown"
+                class="ustensiles-content shadow-lg invisible absolute -bottom-32 z-20 h-auto w-48 flex-col items-center rounded-b bg-white px-4 py-4"
+              >
+                <form action="/recherche" method="GET" class="flex border py-1">
+                  <input
+                    id="ustensiles-search"
+                    type="text"
+                    class="w-full px-2 focus:outline-none"
+                    aria-label="Champ de recherche"
+                  />
+                  <button class="bg-white p-1">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="#C6C6C6"
+                        d="M9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l5.6 5.6q.275.275.275.7t-.275.7t-.7.275t-.7-.275l-5.6-5.6q-.75.6-1.725.95T9.5 16m0-2q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"
+                      />
+                    </svg>
+                  </button>
+                </form>
+              </div>
+            </div>
           </div>
 
           <span class="anton"> 50 recettes </span>
@@ -237,11 +331,12 @@
 
         <div
           id="grid-container"
-          class="mx-auto grid w-full max-w-screen-2xl grid-cols-3 place-items-center justify-center gap-12 bg-[#eeeeee] px-24"
+          class="mx-auto grid w-full  max-w-screen-2xl grid-cols-3 place-items-center justify-center gap-12 bg-[#eeeeee] px-24"
         ></div>
         <!-- !! -->
       </section>
     </main>
+
     <!-- ! -->
     <footer></footer>
 

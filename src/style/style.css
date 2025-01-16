@@ -17,3 +17,7 @@
   font-weight: 400;
   object-fit:;
 }
+
+.show {
+  visibility: visible;
+}
