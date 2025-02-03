@@ -1,76 +1,133 @@
+// import des donnés du json
 import data from '../data/recipes.json';
-import { getTemplate } from '/src/scripts/template';
+// import de mon algorithme n°1
+import { searchData } from '/src/scripts/algo1';
+// import de mes fonctions déclarées dans utils.js
+import {
+  formatData,
+  submitButton,
+  displayRecipes,
+  addFilterList,
+  filtersButtons,
+  emptySearch,
+} from './utils.js';
 
-// Pour chaque recette, on crée une carte HTML et on l'ajoute au conteneur.
-data.forEach((recipe) => {
-  const container = document.getElementById('grid-container');
+let filters = {
+  search: '',
+  ingredients: { selected: [] },
+  appliances: { selected: null },
+  ustensils: { selected: [] },
+};
 
-  const template = getTemplate(recipe);
-  container.appendChild(template);
+// je formate les datas pour qu'elles aient toutes une majuscule
+let newData = formatData(data);
+
+const container = document.getElementById('grid-container');
+// affichage des 10 premières recettes comme sur la maquette
+let tenCardsData = newData.slice(0, 10);
+displayRecipes(tenCardsData);
+addFilterList(tenCardsData, filters);
+filtersButtons();
+
+const searchBar = document.getElementById('search');
+
+// Ecoute du changement d'état de la barre de recherche
+searchBar.addEventListener('change', () => {
+  container.innerHTML = '';
+  container.classList.add(
+    'grid',
+    'w-full',
+    'max-w-screen-2xl',
+    'grid-cols-3',
+    'place-items-center',
+    'justify-center',
+    'gap-12',
+    'bg-[#eeeeee]',
+    'px-24'
+  );
+
+  const search = searchBar.value.toLowerCase();
+  filters.search = search;
+
+  // InputDeviceInfo, je manipule les données utilistauer insérer dans la barre de recherche
+  let searchdatas = searchData(search, newData, filters);
+  if (searchdatas) {
+    // COMPORTEMENT BARRE REMPLIE
+    displayRecipes(searchdatas);
+    addFilterList(searchdatas, filters);
+  } else {
+    // COMPORTEMENT BARRE VIDE
+    emptySearch();
+    addFilterList(newData, filters);
+  }
 });
 
-function filterButton() {
-  const buttons = document.querySelectorAll('.filter-button');
-  const ingredientsMenu = document.querySelector('.ingredients-content');
-  const appareilsMenu = document.querySelector('.appareils-content');
-  const ustensilesMenu = document.querySelector('.ustensiles-content');
+// Ecoute des clicques sur les différentes listes
+const ingredientsList = document.getElementById('ingredients-list');
+const appliancesList = document.getElementById('appliances-list');
+const ustensilsList = document.getElementById('ustensils-list');
 
-  buttons.forEach((button) => {
-    // Rotation du vecteur lors du clique sur le bouton
-    let vector = button.querySelector('svg');
-    function toggleVector() {
-      if (vector.getAttribute('style') === 'transform: rotate(180deg);') {
-        vector.removeAttribute('style');
-      } else {
-        vector.setAttribute('style', 'transform: rotate(180deg);');
-      }
-    }
+ingredientsList.addEventListener('click', (e) => {
+  const ingredient = e.target.innerText;
+  filters.ingredients.selected.push(ingredient);
+  container.innerHTML = '';
+  container.classList.add(
+    'grid',
+    'w-full',
+    'max-w-screen-2xl',
+    'grid-cols-3',
+    'place-items-center',
+    'justify-center',
+    'gap-12',
+    'bg-[#eeeeee]',
+    'px-24'
+  );
 
-    // Ecoute du clique sur le bouton pour afficher le menu correspondant
-    button.addEventListener('click', (e) => {
-      if (button.id === 'ingredients') {
-        ingredientsMenu.classList.toggle('show');
-        toggleVector();
-      } else if (
-        !e.target.matches('.filter-button') &&
-        !e.target.matches('#ingredients-search')
-      ) {
-        ingredientsMenu.classList.remove('show');
-      }
+  let searchdatas = searchData(searchBar, newData, filters);
+  displayRecipes(searchdatas);
+  addFilterList(searchdatas, filters);
+});
 
-      if (button.id === 'appareils') {
-        appareilsMenu.classList.toggle('show');
-        toggleVector();
-      } else if (
-        !e.target.matches('.filter-button') &&
-        !e.target.matches('#appareils-search')
-      ) {
-        appareilsMenu.classList.remove('show');
-      }
+appliancesList.addEventListener('click', (e) => {
+  const appliance = e.target.innerText;
+  filters.appliances.selected = appliance;
+  container.innerHTML = '';
+  container.classList.add(
+    'grid',
+    'w-full',
+    'max-w-screen-2xl',
+    'grid-cols-3',
+    'place-items-center',
+    'justify-center',
+    'gap-12',
+    'bg-[#eeeeee]',
+    'px-24'
+  );
 
-      if (button.id === 'ustensiles') {
-        ustensilesMenu.classList.toggle('show');
-        toggleVector();
-      } else if (
-        !e.target.matches('.filter-button') &&
-        !e.target.matches('#ustensiles-search')
-      ) {
-        ustensilesMenu.classList.remove('show');
-      }
+  let searchdatas = searchData(searchBar, newData, filters);
+  displayRecipes(searchdatas);
+  addFilterList(searchdatas, filters);
+});
 
-      window.addEventListener('click', (e) => {
-        if (
-          !e.target.matches('.filter-button') &&
-          !e.target.matches('#button-container input')
-        ) {
-          ingredientsMenu.classList.remove('show');
-          appareilsMenu.classList.remove('show');
-          ustensilesMenu.classList.remove('show');
-          vector.setAttribute('style', 'transform: rotate(180deg);');
-        }
-      });
-    });
-  });
-}
+ustensilsList.addEventListener('click', (e) => {
+  const ustensil = e.target.innerText;
+  filters.ustensils.selected.push(ustensil);
+  container.innerHTML = '';
+  container.classList.add(
+    'grid',
+    'w-full',
+    'max-w-screen-2xl',
+    'grid-cols-3',
+    'place-items-center',
+    'justify-center',
+    'gap-12',
+    'bg-[#eeeeee]',
+    'px-24'
+  );
 
-filterButton();
+  let searchdatas = searchData(searchBar, newData, filters);
+  displayRecipes(searchdatas);
+  addFilterList(searchdatas, filters);
+});
+
+submitButton();

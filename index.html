@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="./public/pictures/game-icons--meal.png" />
     <!-- font Manrope -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -118,11 +119,14 @@
         src="/public/pictures/banner-picture.jpg"
         alt="A delicious bowl of ramen with chopsticks and broth"
       />
+
       <div class="w-[728px]">
         <p class="anton pb-4 text-center text-[42px] text-yellow">
           CHERCHEZ PARMI PLUS DE 1500 RECETTES DU QUOTIDIEN, SIMPLES ET
           DÉLICIEUSES
         </p>
+
+        <!-- !! -->
         <div class="size-full rounded-lg bg-white px-2 py-2">
           <form
             action="/recherche"
@@ -137,7 +141,11 @@
               placeholder="Rechercher une recette, un ingrédient, ..."
               required
             />
-            <button type="submit" class="rounded-lg bg-black hover:bg-yellow active:scale-75 px-2 py-2 group">
+            <button
+              id="search-button"
+              type="submit"
+              class="group rounded-lg bg-black px-2 py-2 hover:bg-yellow active:scale-75"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -159,7 +167,7 @@
     <main>
       <section
         id="recipes-section"
-        class="text- flex size-full flex-col items-center justify-center bg-[#EDEDED]"
+        class="flex size-full flex-col items-center justify-center bg-[#EDEDED]"
       >
         <h2 class="sr-only">Recettes</h2>
         <div
@@ -171,32 +179,32 @@
             class="flex items-center justify-evenly gap-16"
           >
             <!-- LOT BOUTON N°1 INGREDIENTS -->
-            <div id="first-block" class="flex flex-col">
+            <div id="first-block" class="content-block relative flex flex-col">
               <button
                 id="ingredients"
                 class="filter-button relative flex h-14 w-48 items-center justify-between gap-16 rounded-lg bg-white px-4 py-4 shadow-lg"
               >
                 Ingrédients
                 <svg
-                width="15"
-                height="8"
-                viewBox="0 0 15 8"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                style="transform: rotate(180deg);"
-              >
-                <path
-                  d="M1 1L7.5 7L14 1"
-                  stroke="#1B1B1B"
-                  stroke-linecap="round"
-                />
-              </svg>
-              
+                  class="chevron-down transform"
+                  width="15"
+                  height="8"
+                  viewBox="0 0 15 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1 1L7.5 7L14 1"
+                    stroke="#1B1B1B"
+                    stroke-linecap="round"
+                  />
+                </svg>
               </button>
 
               <div
                 id="ingredients-dropdown"
-                class="shadow-lg ingredients-content invisible absolute -bottom-32 z-20 h-auto w-48 flex-col items-center rounded-b bg-white px-4 py-4"
+                data-open="false"
+                class="ingredients-content absolute top-full z-20 -mt-2 hidden h-auto max-h-80 w-48 flex-col items-center overflow-auto rounded-b bg-white px-4 py-4 shadow-lg data-[open=true]:flex"
               >
                 <form action="/recherche" method="GET" class="flex border py-1">
                   <input
@@ -223,31 +231,32 @@
             </div>
 
             <!-- LOT BOUTON N°2 APPAREILS -->
-            <div id="second-block" class="flex flex-col">
+            <div id="second-block" class="content-block relative flex flex-col">
               <button
                 id="appareils"
                 class="filter-button flex h-14 w-48 items-center justify-between gap-16 rounded-lg bg-white px-4 py-4 shadow-lg"
               >
                 Appareils
                 <svg
-                width="15"
-                height="8"
-                viewBox="0 0 15 8"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                style="transform: rotate(180deg);"
-              >
-                <path
-                  d="M1 1L7.5 7L14 1"
-                  stroke="#1B1B1B"
-                  stroke-linecap="round"
-                />
-              </svg>
+                  class="chevron-down transform"
+                  width="15"
+                  height="8"
+                  viewBox="0 0 15 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1 1L7.5 7L14 1"
+                    stroke="#1B1B1B"
+                    stroke-linecap="round"
+                  />
+                </svg>
               </button>
 
               <div
                 id="appareils-dropdown"
-                class="appareils-content shadow-lg invisible absolute -bottom-32 z-20 h-auto w-48 flex-col items-center rounded-b bg-white px-4 py-4"
+                dta-open="false"
+                class="appareils-content absolute top-full z-20 -mt-2 hidden h-auto max-h-80 w-48 flex-col items-center overflow-auto rounded-b bg-white px-4 py-4 shadow-lg data-[open=true]:flex"
               >
                 <form action="/recherche" method="GET" class="flex border py-1">
                   <input
@@ -274,36 +283,36 @@
             </div>
 
             <!-- LOT BOUTON N°3 USTENSILES -->
-            <div id="third-block" class="flex flex-col">
+            <div id="third-block" class="content-block relative flex flex-col">
               <button
-                id="ustensiles"
-                class="filter-button flex shadow-lg h-14 w-48 items-center justify-between gap-16 rounded-lg bg-white px-4 py-4"
+                id="ustensils"
+                class="filter-button flex h-14 w-48 items-center justify-between gap-16 rounded-lg bg-white px-4 py-4 shadow-lg"
               >
                 Ustensiles
                 <svg
-                width="15"
-                height="8"
-                viewBox="0 0 15 8"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                style="transform: rotate(180deg);"
-              >
-                <path
-                  d="M1 1L7.5 7L14 1"
-                  stroke="#1B1B1B"
-                  stroke-linecap="round"
-                />
-              </svg>
+                  class="chevron-down transform"
+                  width="15"
+                  height="8"
+                  viewBox="0 0 15 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1 1L7.5 7L14 1"
+                    stroke="#1B1B1B"
+                    stroke-linecap="round"
+                  />
                 </svg>
               </button>
 
               <div
-                id="ustensiles-dropdown"
-                class="ustensiles-content shadow-lg invisible absolute -bottom-32 z-20 h-auto w-48 flex-col items-center rounded-b bg-white px-4 py-4"
+                id="ustensils-dropdown"
+                data-open="false"
+                class="ustensils-content absolute top-full z-20 -mt-2 hidden h-auto max-h-80 w-48 flex-col items-center overflow-auto rounded-b bg-white px-4 py-4 shadow-lg data-[open=true]:flex"
               >
                 <form action="/recherche" method="GET" class="flex border py-1">
                   <input
-                    id="ustensiles-search"
+                    id="ustensils-search"
                     type="text"
                     class="w-full px-2 focus:outline-none"
                     aria-label="Champ de recherche"
@@ -329,18 +338,20 @@
           <span class="anton"> 50 recettes </span>
         </div>
 
+        <div id="selected-filters"></div>
+
         <div
           id="grid-container"
-          class="mx-auto grid w-full  max-w-screen-2xl grid-cols-3 place-items-center justify-center gap-12 bg-[#eeeeee] px-24"
+          class="mx-auto grid w-full max-w-screen-2xl grid-cols-3 place-items-center justify-center gap-12 bg-[#eeeeee] px-24"
         ></div>
         <!-- !! -->
       </section>
     </main>
 
-    <!-- ! -->
-    <footer></footer>
-
+    <script type="module" src="./src/scripts/utils.js"></script>
     <script type="module" src="./src/scripts/template.js"></script>
+    <script type="module" src="./src/scripts/algo1.js"></script>
+    <script type="module" src="./src/scripts/algo2.js"></script>
     <script type="module" src="./src/scripts/index.js"></script>
   </body>
 </html>

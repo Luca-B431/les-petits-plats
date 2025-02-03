@@ -113,8 +113,6 @@ export function getTemplate(data) {
     const ingredientsGrid = document.createElement('div');
     ingredientsGrid.classList.add('grid', 'grid-cols-2', 'gap-4');
 
-    console.log(ingredients);
-
     ingredients.forEach((ingredientItem) => {
       const ingredientsBloc = document.createElement('div');
       ingredientsBloc.classList.add(
