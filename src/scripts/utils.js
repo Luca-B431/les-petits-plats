@@ -1,25 +1,13 @@
 import { getTemplate } from '/src/scripts/template';
 
-const ingredientsMenu = document.querySelector('.ingredients-content');
-const appareilsMenu = document.querySelector('.appareils-content');
-const ustensilsMenu = document.querySelector('.ustensils-content');
-const ingredientsSearch = document.getElementById('ingredients-search');
-const appareilsSearch = document.getElementById('appareils-search');
-const ustensilsSearch = document.getElementById('ustensils-search');
-
 // Règle si aucune reccherche n'est effectué, afichage d'un message invitant l'utilisateur à effectuer une recherche
 export const emptySearch = () => {
   const recipeContainer = document.getElementById('grid-container');
   recipeContainer.innerHTML = '';
-  recipeContainer.classList.add(
-    'flex',
-    'justify-center',
-    'items-center',
-    'h-96',
-    'w-full',
-    'bg-[#eeeeee]'
-  );
-  recipeContainer.innerHTML = `<h2 class="text-3xl">Aucune recette ne correspond à votre critère… vous pouvez chercher « lait », « beurre », etc.</h2>`;
+  recipeContainer.className =
+    'flex justify-center items-center h-96 w-full bg-[#eeeeee] pb-8 text-2xl';
+
+  recipeContainer.innerHTML = `<h2 class="text-[#a7a7a7] text-3xl">Aucune recette ne correspond à vos critères.<br> Recherchez « lait », « beurre », « farine », etc ...</h2>`;
 };
 // Formate le JSON pour que toutes les valeurs ai une majuscule à la première lettre
 export function formatData(data) {
@@ -45,6 +33,11 @@ export function formatData(data) {
   }));
 }
 
+// Supprime les click listeners
+export function handleClick(event) {
+  event.target.removeEventListener('click', handleClick);
+}
+
 // Gestion du bouton de recherche
 export function submitButton() {
   const submitButton = document.getElementById('search-button');
@@ -58,6 +51,20 @@ export function displayRecipes(data) {
   // Pour chaque recette, on crée une carte HTML et on l'ajoute au conteneur.
   data.forEach((recipe) => {
     const container = document.getElementById('grid-container');
+    container.classList.add(
+      'mx-auto',
+      'grid',
+      'w-full',
+      'h-full',
+      'max-w-screen-2xl',
+      'grid-cols-3',
+      'place-items-center',
+      'justify-center',
+      'gap-12',
+      'bg-[#eeeeee]',
+      'px-24',
+      'pb-8'
+    );
 
     const template = getTemplate(recipe);
     container.appendChild(template);
@@ -65,6 +72,10 @@ export function displayRecipes(data) {
 }
 
 export function filterInputSearch(list) {
+  const ingredientsSearch = document.getElementById('ingredients-search');
+  const appareilsSearch = document.getElementById('appareils-search');
+  const ustensilsSearch = document.getElementById('ustensils-search');
+
   // Résultat de recherche dans l'input INGREDIENTS
   ingredientsSearch.addEventListener('input', () => {
     let ingredientUserSearch = ingredientsSearch.value.toLowerCase();
@@ -106,15 +117,21 @@ export function filterInputSearch(list) {
 }
 
 // Création des listes et des éléments de la liste
-export function addFilterList(data, filter) {
+export function addFilterList(data) {
+  // Vérification de l'existence de la liste d'ingrédients, d'appareils et d'ustensiles
+
+  // PARTIE INGREDIENTS
   const ingredientsBlock = document.getElementById('ingredients-dropdown');
   const existing = document.getElementById('ingredients-list');
   if (existing) {
     ingredientsBlock.removeChild(existing);
   }
+
   const listIngredients = document.createElement('ul');
   listIngredients.setAttribute('id', 'ingredients-list');
   listIngredients.classList.add('bg-white', 'px-4', 'px-2', 'w-full');
+
+  // PARTIE APPAREILS
   const appareilsBlock = document.getElementById('appareils-dropdown');
   const existingAppareils = document.getElementById('appareils-list');
   if (existingAppareils) {
@@ -123,6 +140,8 @@ export function addFilterList(data, filter) {
   const listAppareils = document.createElement('ul');
   listAppareils.setAttribute('id', 'appareils-list');
   listAppareils.classList.add('bg-white', 'px-4', 'px-2', 'w-full');
+
+  // PARTIE USTENSILES
   const ustensilsBlock = document.getElementById('ustensils-dropdown');
   const existingUstensils = document.getElementById('ustensils-list');
   if (existingUstensils) {
@@ -131,10 +150,14 @@ export function addFilterList(data, filter) {
   const listUstensils = document.createElement('ul');
   listUstensils.setAttribute('id', 'ustensils-list');
   listAppareils.classList.add('bg-white', 'px-4', 'px-2', 'w-full');
+
+  // Créations des objets uniques,
+  //  new Set() permet de ne pas avoir de doublons
   let arrayIngredients = new Set();
   let arrayAppareils = new Set();
   let arrayUstensils = new Set();
 
+  // On ajoute dans les Sets au desus les différents éléments
   data.forEach((recipe) => {
     recipe.ingredients.forEach((ingredient) => {
       arrayIngredients.add(ingredient.ingredient);
@@ -151,7 +174,8 @@ export function addFilterList(data, filter) {
     });
   });
 
-  // Trie par ordre alphabétique et gestion des accents pour bien les placer dans la liste
+  // Trie par ordre alphabétique
+  //  et gestion des accents pour bien les placer dans la liste
   let sortedIngredients = [...arrayIngredients].sort((a, b) =>
     a.localeCompare(b, 'fr', { sensitivity: 'base' })
   );
@@ -162,13 +186,11 @@ export function addFilterList(data, filter) {
     a.localeCompare(b, 'fr', { sensitivity: 'base' })
   );
 
+  // Création des éléments <li> dans les listes correspondantes
   sortedIngredients.forEach((ingredient) => {
     let li = document.createElement('li');
     li.textContent = ingredient;
     li.classList.add('hover:bg-yellow', 'pb-2', 'li');
-    li.addEventListener('click', () => {
-      displaySelectedFilters(data, li, filter);
-    });
     listIngredients.appendChild(li);
   });
 
@@ -176,9 +198,6 @@ export function addFilterList(data, filter) {
     let li = document.createElement('li');
     li.textContent = appliance;
     li.classList.add('hover:bg-yellow', 'pb-2');
-    li.addEventListener('click', () => {
-      displaySelectedFilters(data, li, filter);
-    });
     listAppareils.appendChild(li);
   });
 
@@ -186,12 +205,10 @@ export function addFilterList(data, filter) {
     let li = document.createElement('li');
     li.textContent = ustensile;
     li.classList.add('hover:bg-yellow', 'pb-2');
-    li.addEventListener('click', () => {
-      displaySelectedFilters(data, li, filter);
-    });
     listUstensils.appendChild(li);
   });
 
+  // Ajout des listes dans les conteneurs
   ingredientsBlock.appendChild(listIngredients);
   appareilsBlock.appendChild(listAppareils);
   ustensilsBlock.appendChild(listUstensils);
@@ -202,10 +219,16 @@ export function addFilterList(data, filter) {
   return { listIngredients, listAppareils, listUstensils };
 }
 
-// Gestion des boutons de filtres
-export function filtersButtons() {
+// Création et gestion des boutons de filtres
+export function addButtonsListeners() {
+  const ingredientsMenu = document.querySelector('.ingredients-content');
+  const appareilsMenu = document.querySelector('.appareils-content');
+  const ustensilsMenu = document.querySelector('.ustensils-content');
+
+  // Les 3 boutons : INGREDIENTS, APPAREILS, USTENSILES
   const buttons = document.querySelectorAll('.filter-button');
 
+  // ECOUTE DU CLIQUE SUR LES BOUTONS
   buttons.forEach((button) => {
     // Rotation du vecteur lors du clique sur le bouton
     let vector = button.querySelector('svg');
@@ -214,7 +237,7 @@ export function filtersButtons() {
     }
 
     // Ecoute du clique sur le bouton pour afficher le menu correspondant
-    button.addEventListener('click', (e) => {
+    button.addEventListener('click', () => {
       if (button.id === 'ingredients') {
         toggleVector();
         const isOpen = ingredientsMenu.getAttribute('data-open');
@@ -222,13 +245,7 @@ export function filtersButtons() {
           'data-open',
           isOpen === 'true' ? 'false' : 'true'
         );
-      } else if (
-        !e.target.matches('.filter-button') &&
-        !e.target.matches('#ingredients-search')
-      ) {
-        // list.listIngredients.classList.remove('show');
       }
-
       if (button.id === 'appareils') {
         toggleVector();
         const isOpen = appareilsMenu.getAttribute('data-open');
@@ -236,11 +253,6 @@ export function filtersButtons() {
           'data-open',
           isOpen === 'true' ? 'false' : 'true'
         );
-      } else if (
-        !e.target.matches('.filter-button') &&
-        !e.target.matches('#appareils-search')
-      ) {
-        // appareilsMenu.classList.remove('show');
       }
 
       if (button.id === 'ustensils') {
@@ -250,14 +262,11 @@ export function filtersButtons() {
           'data-open',
           isOpen === 'true' ? 'false' : 'true'
         );
-      } else if (
-        !e.target.matches('.filter-button') &&
-        !e.target.matches('#ustensils-search')
-      ) {
-        // ustensilesMenu.classList.remove('show');
       }
     });
   });
+
+  // ECOUTE DU CLIQUE EN DEHORS DES LISTES
   window.addEventListener('click', (e) => {
     if (
       !e.target.matches('.filter-button') &&
@@ -278,7 +287,7 @@ export function filtersButtons() {
 }
 
 // Gestion des filtres
-export function displaySelectedFilters(data, filterTarget, filter) {
+export function displaySelectedFilters(filterTarget) {
   const selectedFiltersDiv = document.getElementById('selected-filters');
   selectedFiltersDiv.classList.add(
     'grid',
@@ -336,15 +345,6 @@ export function displaySelectedFilters(data, filterTarget, filter) {
   // Assemblage du SVG
   svgElement.appendChild(pathElement);
   filterCloseButton.appendChild(svgElement);
-
-  // Ajout d'un écouteur d'événement pour supprimer le filtre lors du clic sur le bouton de fermeture
-  filterCloseButton.addEventListener('click', () => {
-    selectedFiltersDiv.removeChild(selectedFilter);
-    if (!selectedFiltersDiv.querySelector('div')) {
-      selectedFiltersDiv.className = '';
-      filtersButtons(addFilterList(data, filter));
-    }
-  });
 
   // Assemblage des éléments
   selectedFilter.appendChild(filterName);
