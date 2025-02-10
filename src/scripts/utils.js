@@ -122,39 +122,20 @@ export function addFilterList(data) {
 
   // PARTIE INGREDIENTS
   const ingredientsBlock = document.getElementById('ingredients-dropdown');
-  const existing = document.getElementById('ingredients-list');
-  if (existing) {
-    ingredientsBlock.removeChild(existing);
-  }
-
-  const listIngredients = document.createElement('ul');
-  listIngredients.setAttribute('id', 'ingredients-list');
-  listIngredients.classList.add('bg-white', 'px-4', 'px-2', 'w-full');
+  const listIngredients = document.getElementById('ingredients-list');
 
   // PARTIE APPAREILS
   const appareilsBlock = document.getElementById('appareils-dropdown');
-  const existingAppareils = document.getElementById('appareils-list');
-  if (existingAppareils) {
-    appareilsBlock.removeChild(existingAppareils);
-  }
-  const listAppareils = document.createElement('ul');
-  listAppareils.setAttribute('id', 'appareils-list');
-  listAppareils.classList.add('bg-white', 'px-4', 'px-2', 'w-full');
+  const listAppliances = document.getElementById('appliances-list');
 
   // PARTIE USTENSILES
   const ustensilsBlock = document.getElementById('ustensils-dropdown');
-  const existingUstensils = document.getElementById('ustensils-list');
-  if (existingUstensils) {
-    ustensilsBlock.removeChild(existingUstensils);
-  }
-  const listUstensils = document.createElement('ul');
-  listUstensils.setAttribute('id', 'ustensils-list');
-  listAppareils.classList.add('bg-white', 'px-4', 'px-2', 'w-full');
+  const listUstensils = document.getElementById('ustensils-list');
 
   // Créations des objets uniques,
   //  new Set() permet de ne pas avoir de doublons
   let arrayIngredients = new Set();
-  let arrayAppareils = new Set();
+  let arrayAppliances = new Set();
   let arrayUstensils = new Set();
 
   // On ajoute dans les Sets au desus les différents éléments
@@ -165,7 +146,7 @@ export function addFilterList(data) {
   });
 
   data.forEach((recipe) => {
-    arrayAppareils.add(recipe.appliance);
+    arrayAppliances.add(recipe.appliance);
   });
 
   data.forEach((recipe) => {
@@ -179,7 +160,7 @@ export function addFilterList(data) {
   let sortedIngredients = [...arrayIngredients].sort((a, b) =>
     a.localeCompare(b, 'fr', { sensitivity: 'base' })
   );
-  let sortedAppareils = [...arrayAppareils].sort((a, b) =>
+  let sortedAppareils = [...arrayAppliances].sort((a, b) =>
     a.localeCompare(b, 'fr', { sensitivity: 'base' })
   );
   let sortedUstensils = [...arrayUstensils].sort((a, b) =>
@@ -198,7 +179,7 @@ export function addFilterList(data) {
     let li = document.createElement('li');
     li.textContent = appliance;
     li.classList.add('hover:bg-yellow', 'pb-2');
-    listAppareils.appendChild(li);
+    listAppliances.appendChild(li);
   });
 
   sortedUstensils.forEach((ustensile) => {
@@ -210,84 +191,77 @@ export function addFilterList(data) {
 
   // Ajout des listes dans les conteneurs
   ingredientsBlock.appendChild(listIngredients);
-  appareilsBlock.appendChild(listAppareils);
+  appareilsBlock.appendChild(listAppliances);
   ustensilsBlock.appendChild(listUstensils);
   filterInputSearch(listIngredients);
-  filterInputSearch(listAppareils);
+  filterInputSearch(listAppliances);
   filterInputSearch(listUstensils);
 
-  return { listIngredients, listAppareils, listUstensils };
+  return { listIngredients, listAppliances, listUstensils };
 }
 
 // Création et gestion des boutons de filtres
 export function addButtonsListeners() {
+  // Les 3 boutons : INGREDIENTS, APPAREILS, USTENSILES
+  const ingredientsButton = document.getElementById('ingredients-button');
+  const appliancesButton = document.getElementById('appliances-button');
+  const ustensilsButton = document.getElementById('ustensils-button');
+
+  // Les 3 listes : INGREDIENTS, APPAREILS, USTENSILES
   const ingredientsMenu = document.querySelector('.ingredients-content');
   const appareilsMenu = document.querySelector('.appareils-content');
   const ustensilsMenu = document.querySelector('.ustensils-content');
 
-  // Les 3 boutons : INGREDIENTS, APPAREILS, USTENSILES
-  const buttons = document.querySelectorAll('.filter-button');
+  function toggleVector() {
+    console.log('oui');
+  }
 
-  // ECOUTE DU CLIQUE SUR LES BOUTONS
-  buttons.forEach((button) => {
-    // Rotation du vecteur lors du clique sur le bouton
-    let vector = button.querySelector('svg');
-    function toggleVector() {
-      vector.classList.toggle('rotate-180');
-    }
+  // Ecoute du clique sur le bouton pour afficher le menu correspondant
+  ingredientsButton.addEventListener('click', () => {
+    toggleVector();
+    const isOpen = ingredientsMenu.getAttribute('data-open');
+    ingredientsMenu.setAttribute(
+      'data-open',
+      isOpen === 'true' ? 'false' : 'true'
+    );
+  });
 
-    // Ecoute du clique sur le bouton pour afficher le menu correspondant
-    button.addEventListener('click', () => {
-      if (button.id === 'ingredients') {
-        toggleVector();
-        const isOpen = ingredientsMenu.getAttribute('data-open');
-        ingredientsMenu.setAttribute(
-          'data-open',
-          isOpen === 'true' ? 'false' : 'true'
-        );
-      }
-      if (button.id === 'appareils') {
-        toggleVector();
-        const isOpen = appareilsMenu.getAttribute('data-open');
-        appareilsMenu.setAttribute(
-          'data-open',
-          isOpen === 'true' ? 'false' : 'true'
-        );
-      }
+  appliancesButton.addEventListener('click', () => {
+    toggleVector();
+    const isOpen = appareilsMenu.getAttribute('data-open');
+    appareilsMenu.setAttribute(
+      'data-open',
+      isOpen === 'true' ? 'false' : 'true'
+    );
+  });
 
-      if (button.id === 'ustensils') {
-        toggleVector();
-        const isOpen = ustensilsMenu.getAttribute('data-open');
-        ustensilsMenu.setAttribute(
-          'data-open',
-          isOpen === 'true' ? 'false' : 'true'
-        );
-      }
-    });
+  ustensilsButton.addEventListener('click', () => {
+    toggleVector();
+    const isOpen = ustensilsMenu.getAttribute('data-open');
+    ustensilsMenu.setAttribute(
+      'data-open',
+      isOpen === 'true' ? 'false' : 'true'
+    );
   });
 
   // ECOUTE DU CLIQUE EN DEHORS DES LISTES
-  window.addEventListener('click', (e) => {
-    if (
-      !e.target.matches('.filter-button') &&
-      !e.target.matches('#button-container input')
-    ) {
-      // Cache les listes
-      ingredientsMenu.setAttribute('data-open', 'false');
-      appareilsMenu.setAttribute('data-open', 'false');
-      ustensilsMenu.setAttribute('data-open', 'false');
-
-      // Le vecteur flèche se replace
-      let vectors = document.querySelectorAll('.chevron-down');
-      vectors.forEach((vector) => {
-        vector.classList.add('rotate-180');
-      });
-    }
-  });
+  // window.addEventListener('click', (e) => {
+  //   if (
+  //     !e.target.matches('.filter-button') &&
+  //     !e.target.matches('#ingredients-content form')
+  //   ) {
+  //     // Cache les listes
+  //     ingredientsMenu.setAttribute('data-open', 'false');
+  //     appareilsMenu.setAttribute('data-open', 'false');
+  //     ustensilsMenu.setAttribute('data-open', 'false');
+  //   } else {
+  //     console.log('windowClicker failed !');
+  //   }
+  // });
 }
 
 // Gestion des filtres
-export function displaySelectedFilters(filterTarget) {
+export function displaySelectedFilters(filterTarget, filters) {
   const selectedFiltersDiv = document.getElementById('selected-filters');
   selectedFiltersDiv.classList.add(
     'grid',
@@ -316,7 +290,7 @@ export function displaySelectedFilters(filterTarget) {
 
   const filterName = document.createElement('span');
   filterName.classList.add('text-sm', 'truncate');
-  filterName.textContent = filterTarget.textContent;
+  filterName.textContent = filterTarget;
 
   // Création du conteneur pour le bouton de fermeture
   const filterCloseButton = document.createElement('button');
