@@ -231,7 +231,13 @@ function checkIfContainerIsEmpty() {
   if (selectedFiltersContainer.children.length === 0) {
     selectedFiltersContainer.classList.add('hidden');
     container.innerHTML = '';
+
     emptySearch();
+    addFilterList(searchdatas, filters);
+    if (filters.search === '') {
+      cleanList();
+      addFilterList(newData);
+    }
   } else {
     selectedFiltersContainer.classList.remove('hidden');
   }
@@ -263,9 +269,13 @@ selectedFiltersContainer.addEventListener('click', (e) => {
 
       searchdatas = searchData(newData, filters);
       displayRecipes(searchdatas);
-      cleanList();
-      addFilterList(searchdatas, filters);
-      liListener();
+      if (filters.search === '') {
+        cleanList();
+        addFilterList(searchdatas, filters);
+        liListener();
+      } else {
+        console.log('search is not empty');
+      }
     }
 
     if (filters.appliances.selected === filterTag.innerText) {
