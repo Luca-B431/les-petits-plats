@@ -82,7 +82,9 @@ searchBar.addEventListener('change', () => {
   if (searchdatas !== undefined) {
     // COMPORTEMENT BARRE REMPLIE
     displayRecipes(searchdatas);
+    cleanList();
     addFilterList(searchdatas);
+    liListener();
   }
 
   if (search === '') {
@@ -97,24 +99,24 @@ searchBar.addEventListener('change', () => {
 // RECHERCHE AVEC LES LISTES D'INGREDIENTS, D'APPAREILS ET D'USTENSILES (
 
 function liListener() {
-  let allIngredientsLi = document.querySelectorAll('#ingredients-list li');
-  let allAppliancesList = document.querySelectorAll('#appliances-list li');
-  let allUstensilsList = document.querySelectorAll('#ustensils-list li');
+  // Écouteurs d'événements avec une délégation d'événements
+  // On écoute sur le parent, donc même si les éléments <li> sont ajoutés/détachés, ça marche toujours
+  const ingredientsList = document.getElementById('ingredients-list');
+  const appliancesList = document.getElementById('appliances-list');
+  const ustensilsList = document.getElementById('ustensils-list');
 
-  // Ecoute du click sur les éléments de la liste des ingrédients
-  allIngredientsLi.forEach((liElem) => {
-    liElem.addEventListener('click', () => {
+  // Écoute des clics sur les éléments de la liste des ingrédients
+  ingredientsList.addEventListener('click', (e) => {
+    const liElem = e.target;
+    if (liElem.tagName === 'LI') {
       // Ingredients prends la valeur de l'élément cliqué
       const ingredient = liElem.innerText;
-
       let filterTarget = ingredient;
 
-      // On push l'élément cliqué dans le tableau des ingrédients sélectionnés
       if (!filters.ingredients.selected.includes(ingredient)) {
         filters.ingredients.selected.push(ingredient);
         console.log(filters.ingredients.selected);
 
-        // Gestion du style et du contenu du container
         container.innerHTML = '';
         container.classList.add(
           'mx-auto',
@@ -131,26 +133,23 @@ function liListener() {
           'pb-8'
         );
 
-        // Si la barre de recherche est vide, je filtre les données
-        if (searchdatas) {
-          searchdatas = searchData(newData, filters);
-          displaySelectedFilters(filterTarget);
-          displayRecipes(searchdatas);
-          cleanList();
-          addFilterList(searchdatas, filters);
-          checkIfContainerIsEmpty();
-        }
+        searchdatas = searchData(newData, filters);
+        displaySelectedFilters(filterTarget);
+        displayRecipes(searchdatas);
+        cleanList();
+        addFilterList(searchdatas, filters);
+        checkIfContainerIsEmpty();
       } else {
         console.log('Cet ingrédient est déjà sélectionné');
       }
-    });
+    }
   });
 
-  // Ecoute du click sur les éléments de la liste des appareils
-  allAppliancesList.forEach((liElem) => {
-    liElem.addEventListener('click', () => {
+  // Écoute des clics sur les éléments de la liste des appareils
+  appliancesList.addEventListener('click', (e) => {
+    const liElem = e.target;
+    if (liElem.tagName === 'LI') {
       const appliance = liElem.innerText;
-
       let filterTarget = appliance;
 
       if (filters.appliances.selected !== appliance) {
@@ -169,25 +168,23 @@ function liListener() {
           'px-24'
         );
 
-        if (searchdatas) {
-          searchdatas = searchData(newData, filters);
-          displaySelectedFilters(filterTarget);
-          displayRecipes(searchdatas);
-          cleanList();
-          addFilterList(searchdatas, filters);
-          checkIfContainerIsEmpty();
-        } else {
-          console.log('Appareil déjà sélectionné');
-        }
+        searchdatas = searchData(newData, filters);
+        displaySelectedFilters(filterTarget);
+        displayRecipes(searchdatas);
+        cleanList();
+        addFilterList(searchdatas, filters);
+        checkIfContainerIsEmpty();
+      } else {
+        console.log('Appareil déjà sélectionné');
       }
-    });
+    }
   });
 
-  // Ecoute du click sur les éléments de la liste des ustensiles
-  allUstensilsList.forEach((liElem) => {
-    liElem.addEventListener('click', () => {
+  // Écoute des clics sur les éléments de la liste des ustensiles
+  ustensilsList.addEventListener('click', (e) => {
+    const liElem = e.target;
+    if (liElem.tagName === 'LI') {
       const ustensil = liElem.innerText;
-
       let filterTarget = ustensil;
 
       if (!filters.ustensils.selected.includes(ustensil)) {
@@ -206,18 +203,16 @@ function liListener() {
           'px-24'
         );
 
-        if (searchdatas) {
-          searchdatas = searchData(newData, filters);
-          displaySelectedFilters(filterTarget);
-          displayRecipes(searchdatas);
-          cleanList();
-          addFilterList(searchdatas, filters);
-          checkIfContainerIsEmpty();
-        } else {
-          console.log('Ustensile déjà sélectionné');
-        }
+        searchdatas = searchData(newData, filters);
+        displaySelectedFilters(filterTarget);
+        displayRecipes(searchdatas);
+        cleanList();
+        addFilterList(searchdatas, filters);
+        checkIfContainerIsEmpty();
+      } else {
+        console.log('Ustensile déjà sélectionné');
       }
-    });
+    }
   });
 }
 
