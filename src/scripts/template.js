@@ -55,7 +55,7 @@ export function getTemplate(data) {
     // CREATION DE L'IMAGE
     const cardImage = document.createElement('img');
     cardImage.classList.add('h-64', 'w-full', 'object-cover', 'rounded-t-md');
-    cardImage.src = `./public/pictures/${image}`;
+    cardImage.src = `/pictures/${image}`;
     cardImage.alt = name;
 
     const timeBubble = document.createElement('span');
