@@ -1,5 +1,7 @@
 import { getTemplate } from '/src/scripts/template';
 
+// AJOUT DE FONCTION INJECTION HTML
+
 // Règle si aucune reccherche n'est effectué, afichage d'un message invitant l'utilisateur à effectuer une recherche
 export const emptySearch = () => {
   const recipeContainer = document.getElementById('grid-container');
@@ -33,7 +35,7 @@ export function formatData(data) {
   }));
 }
 
-// Supprime les click listeners
+// Supprime les click listeners si nécessaire en dynamique
 export function handleClick(event) {
   event.target.removeEventListener('click', handleClick);
 }
@@ -46,7 +48,7 @@ export function submitButton() {
   });
 }
 
-// Gestion de la barre de recherche
+// Affichage des cartes de recettes avec le template
 export function displayRecipes(data) {
   // Pour chaque recette, on crée une carte HTML et on l'ajoute au conteneur.
   data.forEach((recipe) => {
@@ -71,6 +73,7 @@ export function displayRecipes(data) {
   });
 }
 
+// Recherche avec input dans la liste des différents filtres : ingrédients, appareils, ustensiles
 export function filterInputSearch(list) {
   const ingredientsSearch = document.getElementById('ingredients-search');
   const appareilsSearch = document.getElementById('appareils-search');
@@ -82,9 +85,9 @@ export function filterInputSearch(list) {
     list.childNodes.forEach((li) => {
       let ingredient = li.textContent.toLowerCase();
       if (ingredient.includes(ingredientUserSearch)) {
-        li.classList.remove('invisible');
+        li.classList.remove('hidden');
       } else {
-        li.classList.add('invisible');
+        li.classList.add('hidden');
       }
     });
   });
@@ -95,9 +98,9 @@ export function filterInputSearch(list) {
     list.childNodes.forEach((li) => {
       let ingredient = li.textContent.toLowerCase();
       if (ingredient.includes(appareilsUserSearch)) {
-        li.classList.remove('invisible');
+        li.classList.remove('hidden');
       } else {
-        li.classList.add('invisible');
+        li.classList.add('hidden');
       }
     });
   });
@@ -108,15 +111,25 @@ export function filterInputSearch(list) {
     list.childNodes.forEach((li) => {
       let ingredient = li.textContent.toLowerCase();
       if (ingredient.includes(ustensilsUserSearch)) {
-        li.classList.remove('invisible');
+        li.classList.remove('hidden');
       } else {
-        li.classList.add('invisible');
+        li.classList.add('hidden');
       }
     });
   });
 }
 
-// Création des listes et des éléments de la liste
+export function cleanList() {
+  const listIngredients = document.getElementById('ingredients-list');
+  const listAppliances = document.getElementById('appliances-list');
+  const listUstensils = document.getElementById('ustensils-list');
+
+  listIngredients.innerHTML = '';
+  listAppliances.innerHTML = '';
+  listUstensils.innerHTML = '';
+}
+
+// Tri et création des listes et des éléments de la liste
 export function addFilterList(data) {
   // Vérification de l'existence de la liste d'ingrédients, d'appareils et d'ustensiles
 
@@ -243,31 +256,17 @@ export function addButtonsListeners() {
       isOpen === 'true' ? 'false' : 'true'
     );
   });
-
-  // ECOUTE DU CLIQUE EN DEHORS DES LISTES
-  // window.addEventListener('click', (e) => {
-  //   if (
-  //     !e.target.matches('.filter-button') &&
-  //     !e.target.matches('#ingredients-content form')
-  //   ) {
-  //     // Cache les listes
-  //     ingredientsMenu.setAttribute('data-open', 'false');
-  //     appareilsMenu.setAttribute('data-open', 'false');
-  //     ustensilsMenu.setAttribute('data-open', 'false');
-  //   } else {
-  //     console.log('windowClicker failed !');
-  //   }
-  // });
 }
 
-// Gestion des filtres
-export function displaySelectedFilters(filterTarget, filters) {
+// Affichage des filtres sélectionnés sous les boutons de filtres
+export function displaySelectedFilters(filterTarget) {
   const selectedFiltersDiv = document.getElementById('selected-filters');
   selectedFiltersDiv.classList.add(
     'grid',
     'row-auto',
     'grid-cols-6',
     'w-full',
+    'h-full',
     'max-w-screen-2xl',
     'items-center',
     'gap-4',
@@ -285,21 +284,28 @@ export function displaySelectedFilters(filterTarget, filters) {
     'justify-between',
     'items-center',
     'rounded-lg',
-    'shadow-lg'
+    'shadow-lg',
+    'filter-tag'
   );
 
   const filterName = document.createElement('span');
+
   filterName.classList.add('text-sm', 'truncate');
   filterName.textContent = filterTarget;
 
   // Création du conteneur pour le bouton de fermeture
   const filterCloseButton = document.createElement('button');
-  filterCloseButton.setAttribute('id', 'filter-close-cross');
-  filterCloseButton.classList.add('ml-2', 'p-1', 'focus:outline-none');
+  filterCloseButton.classList.add(
+    'relative',
+    'p-1',
+    'focus:outline-none',
+    'filter-close-cross'
+  );
 
   // Création de l'élément SVG
   const svgNS = 'http://www.w3.org/2000/svg';
   const svgElement = document.createElementNS(svgNS, 'svg');
+  svgElement.classList.add('m-2', 'h-4', 'w-4', 'filter-close-cross');
   svgElement.setAttribute('width', '14');
   svgElement.setAttribute('height', '13');
   svgElement.setAttribute('viewBox', '0 0 14 13');
