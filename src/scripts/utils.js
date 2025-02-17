@@ -5,11 +5,16 @@ import { getTemplate } from '/src/scripts/template';
 // Règle si aucune reccherche n'est effectué, afichage d'un message invitant l'utilisateur à effectuer une recherche
 export const emptySearch = () => {
   const recipeContainer = document.getElementById('grid-container');
+
   recipeContainer.innerHTML = '';
   recipeContainer.className =
     'flex justify-center items-center h-96 w-full bg-[#eeeeee] pb-8 text-2xl';
 
   recipeContainer.innerHTML = `<h2 class="text-[#a7a7a7] text-3xl">Aucune recette ne correspond à vos critères.<br> Recherchez « lait », « beurre », « farine », etc ...</h2>`;
+
+  const recipeCounter = document.getElementById('recipe-counter');
+
+  recipeCounter.textContent = `0 recette`;
 };
 // Formate le JSON pour que toutes les valeurs ai une majuscule à la première lettre
 export function formatData(data) {
@@ -33,6 +38,12 @@ export function formatData(data) {
         .join(' ')
     ),
   }));
+}
+
+export function displayRecipeCount(datas) {
+  const recipeCounter = document.getElementById('recipe-counter');
+
+  recipeCounter.textContent = `${datas.length} recettes`;
 }
 
 // Supprime les click listeners si nécessaire en dynamique
@@ -226,7 +237,7 @@ export function addButtonsListeners() {
   const ustensilsMenu = document.querySelector('.ustensils-content');
 
   function toggleVector() {
-    console.log('oui');
+    // unset
   }
 
   // Ecoute du clique sur le bouton pour afficher le menu correspondant

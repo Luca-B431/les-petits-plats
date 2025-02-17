@@ -12,6 +12,7 @@ import {
   emptySearch,
   displaySelectedFilters,
   cleanList,
+  displayRecipeCount,
 } from './utils.js';
 
 // Initialisation de la variable de stock des saisies utilisateurs
@@ -32,21 +33,21 @@ let searchdatas = [];
 submitButton();
 // Ajout des listeners sur les 3 boutons de filtres
 addButtonsListeners();
+// Gestion du compteur de recettes
 
 // je formate les datas pour qu'elles aient toutes une majuscule
 let newData = formatData(data);
 
 // -----------------------------------------------------------------------------
 
-// AFFICHAGE DE BASE AVEC 10 RECETTES (
+// CREARION DE LA LISTE DE RECETTES AU CHARGEMENT
+// 50 RECETTES
 
 const container = document.getElementById('grid-container');
 
-let tenCardsData = newData.slice(0, 10);
-displayRecipes(tenCardsData);
-addFilterList(tenCardsData, filters);
-
-// )
+displayRecipes(newData);
+addFilterList(newData, filters);
+displayRecipeCount(newData);
 
 // -----------------------------------------------------------------------------
 
@@ -72,7 +73,6 @@ searchBar.addEventListener('change', () => {
 
   const search = searchBar.value.toLowerCase();
   filters.search = search;
-  console.log(filters);
 
   // Ici, je manipule les données utilisateur insérées dans la barre de recherche
   searchdatas = searchData(newData, filters);
@@ -82,6 +82,7 @@ searchBar.addEventListener('change', () => {
   if (searchdatas !== undefined) {
     // COMPORTEMENT BARRE REMPLIE
     displayRecipes(searchdatas);
+    displayRecipeCount(searchdatas);
     cleanList();
     addFilterList(searchdatas);
     liListener();
@@ -108,6 +109,7 @@ function liListener() {
   // Écoute des clics sur les éléments de la liste des ingrédients
   ingredientsList.addEventListener('click', (e) => {
     const liElem = e.target;
+
     if (liElem.tagName === 'LI') {
       // Ingredients prends la valeur de l'élément cliqué
       const ingredient = liElem.innerText;
@@ -136,6 +138,7 @@ function liListener() {
         searchdatas = searchData(newData, filters);
         displaySelectedFilters(filterTarget);
         displayRecipes(searchdatas);
+        displayRecipeCount(searchdatas);
         cleanList();
         addFilterList(searchdatas, filters);
         checkIfContainerIsEmpty();
@@ -171,6 +174,7 @@ function liListener() {
         searchdatas = searchData(newData, filters);
         displaySelectedFilters(filterTarget);
         displayRecipes(searchdatas);
+        displayRecipeCount(searchdatas);
         cleanList();
         addFilterList(searchdatas, filters);
         checkIfContainerIsEmpty();
@@ -206,6 +210,7 @@ function liListener() {
         searchdatas = searchData(newData, filters);
         displaySelectedFilters(filterTarget);
         displayRecipes(searchdatas);
+        displayRecipeCount(searchdatas);
         cleanList();
         addFilterList(searchdatas, filters);
         checkIfContainerIsEmpty();
@@ -244,68 +249,36 @@ function checkIfContainerIsEmpty() {
 }
 
 selectedFiltersContainer.addEventListener('click', (e) => {
-  // Vérifie si le clic provient d'un élément ayant l'ID "filter-close-cross"
+  // Vérifie si le clic provient d'un élément ayant la classe "filter-close-cross"
   if (e.target.classList.contains('filter-close-cross')) {
-    const filterTag = document.querySelector('.filter-tag');
-    filterTag.remove();
+    // Sélectionne le parent le plus proche avec la classe "filter-tag" qui contient la croix
+    const filterTag = e.target.closest('.filter-tag');
 
-    if (filters.ingredients.selected.includes(filterTag.innerText)) {
-      filters.ingredients.selected = filters.ingredients.selected.filter(
-        (ingredient) => ingredient !== filterTag.innerText
-      );
+    // Si filterTag existe, on peut procéder à sa suppression
+    if (filterTag) {
+      const filterText = filterTag.innerText.trim();
 
-      container.innerHTML = '';
-      container.classList.add(
-        'grid',
-        'w-full',
-        'max-w-screen-2xl',
-        'grid-cols-3',
-        'place-items-center',
-        'justify-center',
-        'gap-12',
-        'bg-[#eeeeee]',
-        'px-24'
-      );
-
-      searchdatas = searchData(newData, filters);
-      displayRecipes(searchdatas);
-      if (filters.search === '') {
-        cleanList();
-        addFilterList(searchdatas, filters);
-        liListener();
-      } else {
-        console.log('search is not empty');
+      // Suppression du filtre de la liste des ingrédients, appareils ou ustensiles
+      if (filters.ingredients.selected.includes(filterText)) {
+        filters.ingredients.selected = filters.ingredients.selected.filter(
+          (ingredient) => ingredient !== filterText
+        );
       }
-    }
 
-    if (filters.appliances.selected === filterTag.innerText) {
-      filters.appliances.selected = '';
+      if (filters.appliances.selected === filterText) {
+        filters.appliances.selected = '';
+      }
 
-      container.innerHTML = '';
-      container.classList.add(
-        'grid',
-        'w-full',
-        'max-w-screen-2xl',
-        'grid-cols-3',
-        'place-items-center',
-        'justify-center',
-        'gap-12',
-        'bg-[#eeeeee]',
-        'px-24'
-      );
+      if (filters.ustensils.selected.includes(filterText)) {
+        filters.ustensils.selected = filters.ustensils.selected.filter(
+          (ustensil) => ustensil !== filterText
+        );
+      }
 
-      searchdatas = searchData(newData, filters);
-      displayRecipes(searchdatas);
-      cleanList();
-      addFilterList(searchdatas, filters);
-      liListener();
-    }
+      // Supprime l'élément de l'interface
+      filterTag.remove();
 
-    if (filters.ustensils.selected.includes(filterTag.innerText)) {
-      filters.ustensils.selected = filters.ustensils.selected.filter(
-        (ustensil) => ustensil !== filterTag.innerText
-      );
-
+      // Met à jour l'affichage des recettes
       container.innerHTML = '';
       container.classList.add(
         'grid',
