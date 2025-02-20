@@ -13,6 +13,7 @@ import {
   displaySelectedFilters,
   cleanList,
   displayRecipeCount,
+  escapeHtml,
 } from './utils.js';
 
 // Initialisation de la variable de stock des saisies utilisateurs
@@ -33,7 +34,38 @@ let searchdatas = [];
 submitButton();
 // Ajout des listeners sur les 3 boutons de filtres
 addButtonsListeners();
-// Gestion du compteur de recettes
+// Comportement pour recherche vide ou critère non défini dans les recettes
+const unfindablesSearch = (search) => {
+  // Si la barre de recherche est vide, on exécute la fonction emptySearch
+  if (search === '') {
+    displayRecipes(newData);
+    displayRecipeCount(newData);
+    cleanList();
+    addFilterList(newData, filters);
+    return;
+  }
+
+  let found = false;
+
+  data.forEach((recipe) => {
+    const isFound =
+      recipe.name.includes(search) ||
+      recipe.description.includes(search) ||
+      recipe.ingredients.some((ingredient) =>
+        ingredient.ingredient.includes(search)
+      );
+
+    if (isFound) {
+      found = true;
+      console.log(recipe);
+    }
+  });
+
+  // Inexistant alors afficher le message
+  if (!found) {
+    emptySearch();
+  }
+};
 
 // je formate les datas pour qu'elles aient toutes une majuscule
 let newData = formatData(data);
@@ -71,7 +103,8 @@ searchBar.addEventListener('change', () => {
     'px-24'
   );
 
-  const search = searchBar.value.toLowerCase();
+  let search = searchBar.value.toLowerCase();
+  search = escapeHtml(search);
   filters.search = search;
 
   // Ici, je manipule les données utilisateur insérées dans la barre de recherche
@@ -88,10 +121,7 @@ searchBar.addEventListener('change', () => {
     liListener();
   }
 
-  if (search === '') {
-    // COMPORTEMENT BARRE VIDE
-    emptySearch();
-  }
+  unfindablesSearch(search);
 });
 // )
 

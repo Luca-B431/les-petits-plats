@@ -1,6 +1,26 @@
 import { getTemplate } from '/src/scripts/template';
 
-// AJOUT DE FONCTION INJECTION HTML
+// Fonction pour échapper les caractères spéciaux
+// éviter l'injection de code HTML,
+// on va aller l'appeller pour nettoyer les entrées utilisateurs dans index.js
+export function escapeHtml(userInput) {
+  return userInput.replace(/[&<>"']/g, function (match) {
+    switch (match) {
+      case '&':
+        return '&amp;';
+      case '<':
+        return '&lt;';
+      case '>':
+        return '&gt;';
+      case '"':
+        return '&quot;';
+      case "'":
+        return '&#39;';
+      default:
+        return match;
+    }
+  });
+}
 
 // Règle si aucune reccherche n'est effectué, afichage d'un message invitant l'utilisateur à effectuer une recherche
 export const emptySearch = () => {
@@ -92,7 +112,9 @@ export function filterInputSearch(list) {
 
   // Résultat de recherche dans l'input INGREDIENTS
   ingredientsSearch.addEventListener('input', () => {
-    let ingredientUserSearch = ingredientsSearch.value.toLowerCase();
+    let ingredientUserSearch = escapeHtml(
+      ingredientsSearch.value.toLowerCase()
+    );
     list.childNodes.forEach((li) => {
       let ingredient = li.textContent.toLowerCase();
       if (ingredient.includes(ingredientUserSearch)) {
@@ -105,7 +127,7 @@ export function filterInputSearch(list) {
 
   // Résultat de recherche dans l'input APPAREILS
   appareilsSearch.addEventListener('input', () => {
-    let appareilsUserSearch = appareilsSearch.value.toLowerCase();
+    let appareilsUserSearch = escapeHtml(appareilsSearch.value.toLowerCase());
     list.childNodes.forEach((li) => {
       let ingredient = li.textContent.toLowerCase();
       if (ingredient.includes(appareilsUserSearch)) {
@@ -118,7 +140,7 @@ export function filterInputSearch(list) {
 
   // Résultat de recherche dans l'input USTENSILES
   ustensilsSearch.addEventListener('input', () => {
-    let ustensilsUserSearch = ustensilsSearch.value.toLowerCase();
+    let ustensilsUserSearch = escapeHtml(ustensilsSearch.value.toLowerCase());
     list.childNodes.forEach((li) => {
       let ingredient = li.textContent.toLowerCase();
       if (ingredient.includes(ustensilsUserSearch)) {

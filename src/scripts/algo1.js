@@ -38,3 +38,8 @@ export function searchData(data, filters) {
     );
   });
 }
+
+// Benchmark test :
+// (le plus efficient)
+
+// ~ 4801780 opérations par seconde selon JSben.ch

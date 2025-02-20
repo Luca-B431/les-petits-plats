@@ -82,3 +82,7 @@ export function searchData(data, filters) {
 
   return result;
 }
+
+// Benchmark test :
+
+// ~ 4529738 opération par seconde selon JSben.ch
