@@ -20,7 +20,7 @@ import {
 export let filters = {
   search: '',
   ingredients: { selected: [] },
-  appliances: { selected: '' },
+  appliances: { selected: [] },
   ustensils: { selected: [] },
 };
 
@@ -185,8 +185,8 @@ function liListener() {
       const appliance = liElem.innerText;
       let filterTarget = appliance;
 
-      if (filters.appliances.selected !== appliance) {
-        filters.appliances.selected = appliance;
+      if (!filters.appliances.selected.includes(appliance)) {
+        filters.appliances.selected.push(appliance);
 
         container.innerHTML = '';
         container.classList.add(
@@ -295,8 +295,10 @@ selectedFiltersContainer.addEventListener('click', (e) => {
         );
       }
 
-      if (filters.appliances.selected === filterText) {
-        filters.appliances.selected = '';
+      if (filters.appliances.selected.includes(filterText)) {
+        filters.appliances.selected = filters.appliances.selected.filter(
+          (appliance) => appliance !== filterText
+        );
       }
 
       if (filters.ustensils.selected.includes(filterText)) {
