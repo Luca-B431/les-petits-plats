@@ -1,4 +1,4 @@
-import { getTemplate } from '/src/scripts/template';
+import { getTemplate } from './template.js';
 
 // Fonction pour échapper les caractères spéciaux
 // éviter l'injection de code HTML,
@@ -36,6 +36,7 @@ export const emptySearch = () => {
 
   recipeCounter.textContent = `0 recette`;
 };
+
 // Formate le JSON pour que toutes les valeurs ai une majuscule à la première lettre
 export function formatData(data) {
   return data.map((recipe) => ({
