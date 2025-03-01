@@ -1,7 +1,6 @@
-// import des donnés du json
 import data from '../data/recipes.json';
 // import de mon algorithme n°1
-import { searchData } from '/src/scripts/algo2';
+import { searchData } from './algo2.js';
 // import de mes fonctions déclarées dans utils.js
 import {
   formatData,
